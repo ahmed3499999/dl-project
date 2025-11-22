@@ -21,6 +21,7 @@ export default function App() {
     setCroppedImage(croppedImageData)
     setStep("results")
     setLoading(true)
+    await new Promise((resolve) => setTimeout(resolve, 3000))
     setResults("We are waiting for basil, donia, and nour to finish the model please ")
     setLoading(false)
   }
