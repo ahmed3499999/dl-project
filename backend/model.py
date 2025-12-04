@@ -87,7 +87,7 @@ def detect_and_crop_signs(image, text_prompt="traffic sign", threshold=0.1):
         cropped_margin[i] = [xmin, ymin, xmax, ymax]
         sign_crop = image.crop((xmin, ymin, xmax, ymax))
         cropped_images.append(sign_crop)
-        sign_crop.save(f'crop{i}.png')
+      #  sign_crop.save(f'crop{i}.png')
     return cropped_images , cropped_margin
 
 def drawr(image,margin,preds):
