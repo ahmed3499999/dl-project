@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { PacmanLoader } from 'react-spinners';
 
 const ImagePage = () => {
   const [dragActive, setDragActive] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [loadingImage, setLoadingImage] = useState(null);
   const [isClassified, setIsClassified] = useState(false);
 
   const [processedImage, setProcessedImage] = useState(null);
@@ -45,15 +47,17 @@ const ImagePage = () => {
 
   const handleClassify = async () => {
     try {
-      setIsClassified(true);
+      setLoadingImage(true);
       const base64Image = uploadedImage.split(",")[1];
-
+      
       const res = await fetch("http://localhost:8000/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ base64Image }),
       });
-
+      
+      setLoadingImage(false);
+      setIsClassified(true);
       const data = await res.json();
       setProcessedImage(`data:image/jpeg;base64,${data.image}`);
       setCrops(data.cropped_images);
@@ -156,9 +160,11 @@ const ImagePage = () => {
               )}
             </div>
           </label>
-
+          <div className="flex justify-center mt-6">
+            <PacmanLoader color="#FFFFFF" loading={loadingImage} />
+          </div>
           {/* Action Buttons */}
-          {uploadedImage && !isClassified && (
+          {!loadingImage && !isClassified && (
             <div className="flex gap-2 mt-4">
               <button
                 onClick={handleClassify}

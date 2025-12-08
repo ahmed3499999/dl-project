@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { PacmanLoader } from 'react-spinners';
 
 const CameraUpload = () => {
   const videoRef = useRef(null);
@@ -78,15 +79,17 @@ const CameraUpload = () => {
       <div className="flex gap-6 max-w-6xl mx-auto">
         {/* Camera / Processed Image */}
         <div className="flex-1 bg-black rounded-2xl overflow-hidden flex items-center justify-center" style={{ minHeight: '500px' }}>
-          {processedImage ? (
-            <img src={processedImage} alt="Processed" className="w-full h-full object-contain" />
+          {uploadedImage ? (
+            (processedImage) ? 
+            (<img src={processedImage} alt="Processed" className="w-full h-full object-contain" />) :
+            (<img src={uploadedImage} alt="Processed" className="w-full h-full object-contain" />)
           ) : (
             <video ref={videoRef} autoPlay playsInline className="w-full h-full object-contain" />
           )}
         </div>
 
         {/* Cropped Signs */}
-        <div className="w-80 max-h-[600px] overflow-y-auto space-y-3">
+        <div className="w-90 max-h-[600px] overflow-y-auto space-y-3">
           {crops.map((crop, i) => (
             <div
               key={i}
@@ -105,23 +108,28 @@ const CameraUpload = () => {
 
       {/* Capture Button */}
       <div className="flex justify-center mt-6">
+        <PacmanLoader color="#FFFFFF" loading={uploadedImage && !processedImage} />
+      </div>
+      { uploadedImage ? null : (
+      <div className="flex justify-center mt-6">
         <button
           onClick={capturePhoto}
           className="px-8 py-4 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold text-lg"
         >
           Capture & Classify
         </button>
-      </div>
+      </div>)}
 
       {/* First Sign Name + Confidence */}
       {selectedIndex !== null && crops[selectedIndex] && (
         <div className="mt-4 max-w-md mx-auto">
-          <div className="text-center mb-2 font-semibold">{crops[selectedIndex].name}</div>
-          <div className="w-full bg-gray-600 rounded-full h-4">
+          <div className="text-center mb-2 font-semibold ">{crops[selectedIndex].name}</div>
+          <div className="w-full bg-gray-600 rounded-full h-4 flex items-center px-2 space-x-2">
             <div
               className="bg-orange-500 h-4 rounded-full"
               style={{ width: `${crops[selectedIndex].confidence * 100}%` }}
             />
+            <p className='inline'>{(crops[selectedIndex].confidence * 100).toFixed(2)}%</p>
           </div>
         </div>
       )}
