@@ -1,12 +1,8 @@
 import torch
 import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader
-from torchvision import transforms, datasets, models
-import matplotlib.pyplot as plt
-import numpy as np
+from torchvision import transforms
 from transformers import OwlViTProcessor, OwlViTForObjectDetection
-from PIL import Image, ImageDraw
+from PIL import ImageDraw
 import torch
 import torchvision.transforms as transforms
 import torch    
